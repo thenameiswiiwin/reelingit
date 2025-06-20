@@ -2,18 +2,22 @@
 
 A Fullstack SPA App with Go and Vanilla JS
 
+## Init
+
+Run `go mod init thenameiswiiwin/reelingit` to create the module.
+
 ## Technologies
 
-* **Backend**: Go
-* **Database**: Postgres
-* **Frontend**: HTML, CSS, JS
-* **Communication**: JSON RESTful APIs
+- **Backend**: Go
+- **Database**: Postgres
+- **Frontend**: HTML, CSS, JS
+- **Communication**: JSON RESTful APIs
 
 ## Libraries
 
-* [Air](github.com/air-verse/air) Live reload for Go apps
-* [GoDotEnv](github.com/joho/godotenv) A Go (golang) port of the Ruby dotenv project (which loads env vars from a .env file).
-* [PG](github.com/lib/pq) Pure Go Postgres driver for database/sql
+- [Air](github.com/air-verse/air) Live reload for Go apps
+- [GoDotEnv](github.com/joho/godotenv) A Go (golang) port of the Ruby dotenv project (which loads env vars from a .env file).
+- [PG](github.com/lib/pq) Pure Go Postgres driver for database/sql
 
 ```sh
 go get github.com/joho/godotenv
@@ -23,20 +27,20 @@ go install github.com/cosmtrek/air@latest
 
 ## Data
 
-* The Movie Database (TMDB)
-* ~5,000 subset movies with meta data
-* Images come from TMDB online server
-* Video trailers from YouTube
+- The Movie Database (TMDB)
+- ~5,000 subset movies with meta data
+- Images come from TMDB online server
+- Video trailers from YouTube
 
 ## Features available
 
-* See top and recent movies
-* Search movies
-* Movie details
-* User registration
-* User authentication
-* Favorites movies
-* Watchlist
+- See top and recent movies
+- Search movies
+- Movie details
+- User registration
+- User authentication
+- Favorites movies
+- Watchlist
 
 ## Architecture
 
@@ -57,12 +61,12 @@ go install github.com/cosmtrek/air@latest
 
 ## Database Schema
 
-### Models 
+### Models
 
-* Movie
-* Genre
-* Actor
-* User
+- Movie
+- Genre
+- Actor
+- User
 
 ![Entity](./public/images/models/models_1.png)
 ![Table](./public/images/models/models_2.png)
