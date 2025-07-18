@@ -22,15 +22,15 @@ func main() {
 	logInstance := initializeLogger()
 	movieHandler := handlers.MovieHandler{}
 
-	const addr = ":8080"
-	fmt.Printf("starting server at http://localhost%s\n", addr)
+	// Handlers for API Endpoints
+	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
+	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
 
 	// Handler for Static Files (Frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
+	fmt.Println("Server is running on http://localhost:8080")
 
-	// Handlers for API Endpoints
-	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
-
+	const addr = ":8080"
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("failed to start server: %v", err)
 		logInstance.Error("failed to start server", err)
