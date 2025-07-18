@@ -13,12 +13,12 @@ func initializeLogger() *logger.Logger {
 	if err != nil {
 		log.Fatalf("failed to initialize logger: %v", err)
 	}
-	defer logInstance.Close()
 	return logInstance
 }
 
 func main() {
 	logInstance := initializeLogger()
+	defer logInstance.Close()
 
 	const addr = ":8080"
 	fmt.Printf("starting server at http://localhost%s\n", addr)
