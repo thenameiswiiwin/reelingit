@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/thenameiswiiwin/reelingit/handlers"
 	"github.com/thenameiswiiwin/reelingit/logger"
 )
 
@@ -13,17 +14,22 @@ func initializeLogger() *logger.Logger {
 	if err != nil {
 		log.Fatalf("failed to initialize logger: %v", err)
 	}
+	defer logInstance.Close()
 	return logInstance
 }
 
 func main() {
 	logInstance := initializeLogger()
-	defer logInstance.Close()
+	movieHandler := handlers.MovieHandler{}
 
 	const addr = ":8080"
 	fmt.Printf("starting server at http://localhost%s\n", addr)
 
+	// Handler for Static Files (Frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
+
+	// Handlers for API Endpoints
+	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
 
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("failed to start server: %v", err)

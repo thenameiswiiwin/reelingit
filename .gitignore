@@ -34,4 +34,4 @@ go.work.sum
 /.DS_Store
 .DS_Store
 
-movie-output.log
+movies-output.log
