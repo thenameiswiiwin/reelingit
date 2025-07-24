@@ -25,6 +25,7 @@ func main() {
 
 	// Handle API routes
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
+	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
 
 	// Handle static files
 	http.Handle("/", http.FileServer(http.Dir("public")))
@@ -33,7 +34,7 @@ func main() {
 	fmt.Printf("Starting server on %s...\n", addr)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {
-		log.Fatalf("Failed to start server on %s: %v", addr, err)
 		logInstance.Error("Failed to start server", err)
+		log.Fatalf("Failed to start server on %s: %v", addr, err)
 	}
 }
