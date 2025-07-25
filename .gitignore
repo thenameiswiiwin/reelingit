@@ -38,3 +38,6 @@ go.work.sum
 .air.toml
 
 movie-output.log
+
+/tmp/*
+*log
