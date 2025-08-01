@@ -18,8 +18,9 @@ export class MovieDetailsPage extends HTMLElement {
     this.appendChild(content);
     this.querySelector("h2").textContent = this.movie.title;
     this.querySelector("h3").textContent = this.movie.tagline;
-    this.querySelector("#overview").textContent = this.movie.overview;
     this.querySelector("img").src = this.movie.poster_url;
+    this.querySelector("#overview").textContent = this.movie.overview;
+    this.querySelector("#trailer").dataset.url = this.movie.trailer_url;
     this.querySelector("#metadata").innerHTML = `
       <dt>Release Year</dt>
       <dd>${this.movie.release_year}</dd>
@@ -50,7 +51,7 @@ export class MovieDetailsPage extends HTMLElement {
   }
 
   connectedCallback() {
-    this.id = 140; // TODO: Replace with dynamic ID from the URL or other source
+    this.id = 14; // TODO: Replace with dynamic ID from the URL or other source
 
     this.render();
   }
