@@ -41,3 +41,4 @@ movie-output.log
 
 /tmp/*
 *log
+logs/
