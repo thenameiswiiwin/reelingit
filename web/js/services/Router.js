@@ -45,7 +45,21 @@ export const Router = {
       pageElement = document.createElement("h1");
       pageElement.textContent = "Page not found";
     }
-    document.querySelector("main").innerHTML = "";
-    document.querySelector("main").appendChild(pageElement);
+    const oldPage = document.querySelector("main").firstElementChild;
+    if (oldPage) oldPage.style.viewTransitionName = "old";
+    pageElement.style.viewTransitionName = "new";
+
+    function updatePage() {
+      document.querySelector("main").innerHTML = "";
+      document.querySelector("main").appendChild(pageElement);
+    }
+
+    if (!document.startViewTransition) {
+      updatePage();
+    } else {
+      document.startViewTransition(() => {
+        updatePage();
+      });
+    }
   },
 };

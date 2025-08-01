@@ -61,6 +61,13 @@ func main() {
 	http.HandleFunc("/api/account/register", movieHandler.GetGenres)
 	http.HandleFunc("/api/account/authenticate", movieHandler.GetGenres)
 
+	catchAllClientHandler := func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, filepath.Join(getProjectRoot(), "web", "index.html"))
+	}
+
+	http.HandleFunc("/movies", catchAllClientHandler)
+	http.HandleFunc("/movies/", catchAllClientHandler)
+
 	http.Handle("/", http.FileServer(http.Dir("web")))
 
 	const addr = ":8080"
