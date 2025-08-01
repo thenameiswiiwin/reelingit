@@ -5,8 +5,8 @@ import { MovieDetailsPage } from "./components/MovieDetailsPage.js";
 import { API } from "./services/API.js";
 
 window.addEventListener("DOMContentLoaded", (event) => {
-  // document.querySelector("main").appendChild(new HomePage());
-  document.querySelector("main").appendChild(new MovieDetailsPage());
+  document.querySelector("main").appendChild(new HomePage());
+  // document.querySelector("main").appendChild(new MovieDetailsPage());
 });
 
 window.app = {
