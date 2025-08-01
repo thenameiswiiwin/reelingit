@@ -1,6 +1,6 @@
-import { HomePage } from "../components/HomePage";
-import { MovieDetailsPage } from "../components/MovieDetailsPage";
-import { MoviePage } from "../components/MoviePage";
+import { HomePage } from "../components/HomePage.js";
+import { MovieDetailsPage } from "../components/MovieDetailsPage.js";
+import { MoviePage } from "../components/MoviePage.js";
 
 export const routes = [
   {

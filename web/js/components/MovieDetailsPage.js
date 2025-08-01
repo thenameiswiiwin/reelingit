@@ -51,7 +51,7 @@ export class MovieDetailsPage extends HTMLElement {
   }
 
   connectedCallback() {
-    this.id = 14; // TODO: Replace with dynamic ID from the URL or other source
+    this.id = this.params[0];
 
     this.render();
   }

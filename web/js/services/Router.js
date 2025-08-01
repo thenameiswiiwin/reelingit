@@ -1,10 +1,20 @@
-const Router = {
+import { routes } from "./Routes.js";
+
+export const Router = {
   init: () => {
     window.addEventListener("popstate", () => {
       Router.go(location.pathname, false);
     });
 
-    Router.go(localtion.pathname + location.search);
+    document.querySelectorAll("a.navlink").forEach((a) => {
+      a.addEventListener("click", (event) => {
+        event.preventDefault();
+        const href = a.getAttribute("href");
+        Router.go(href);
+      });
+    });
+
+    Router.go(location.pathname + location.search);
   },
 
   go: (route, addToHistory = true) => {
@@ -16,7 +26,7 @@ const Router = {
 
     const routePath = route.includes("?") ? route.split("?")[0] : route;
 
-    for (const r of route) {
+    for (const r of routes) {
       if (typeof r.path === "string" && r.path === routePath) {
         pageElement = new r.component();
         break;
@@ -26,6 +36,7 @@ const Router = {
           pageElement = new r.component();
           const params = match.slice(1);
           pageElement.params = params;
+          break;
         }
       }
     }
@@ -33,9 +44,8 @@ const Router = {
     if (pageElement == null) {
       pageElement = document.createElement("h1");
       pageElement.textContent = "Page not found";
-    } else {
-      document.querySelector("main").innerHTML = "";
-      document.querySelector("main").appendChild(pageElement);
     }
+    document.querySelector("main").innerHTML = "";
+    document.querySelector("main").appendChild(pageElement);
   },
 };
