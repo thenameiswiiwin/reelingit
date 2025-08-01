@@ -8,7 +8,6 @@ export class MovieDetailsPage extends HTMLElement {
     try {
       this.movie = await API.getMovieById(this.id);
     } catch {
-      alert("Error loading movie details"); // TODO: replace with a proper error handling
       return;
     }
 
