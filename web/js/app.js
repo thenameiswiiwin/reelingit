@@ -10,12 +10,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
 window.app = {
   Router,
   showError: (
-    message = "An unexpected error occurred. Please try again later.",
+    title = "Error",
+    message = "Oops! Something went wrong on our end. Please try again in a moment or refresh the page.",
     goToHome = false,
   ) => {
     const dialog = document.getElementById("alert-modal");
+    dialog.querySelector(".modal-title").textContent = title;
+    dialog.querySelector(".modal-message").textContent = message;
     dialog.showModal();
-    dialog.querySelector("p").textContent = message;
     if (goToHome) app.Router.go("/");
   },
   closeError: () => {

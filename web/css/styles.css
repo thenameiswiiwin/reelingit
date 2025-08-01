@@ -7,6 +7,7 @@
   --color5: #ffcc80;
   --color6: #00c853;
   --highlight2: #fff9c4;
+  --errorColor: #ff5252;
   --border-radius: 8px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   --transition: all 0.3s ease;
@@ -238,14 +239,25 @@ dialog {
   color: var(--textColor);
   border: none;
   border-radius: var(--border-radius);
-  padding: 2rem;
-  max-width: 450px;
+  padding: 2.5rem;
+  max-width: 500px;
   width: 90%;
   box-shadow: var(--shadow);
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.95);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+dialog[open] {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 dialog::backdrop {
@@ -253,50 +265,34 @@ dialog::backdrop {
   backdrop-filter: blur(8px);
 }
 
-dialog h3 {
-  font-size: 1.4rem;
-  margin-bottom: 1.2rem;
-}
-
-dialog p {
-  font-size: 1rem;
+dialog .modal-title {
+  font-size: 1.8rem;
   margin-bottom: 1.5rem;
+  color: var(--errorColor);
+  font-weight: 700;
 }
 
-dialog button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-weight: 600;
-  transition: var(--transition);
+dialog .modal-message {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  line-height: 1.6;
 }
 
 dialog .close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   background: none;
-  color: var(--highlight2);
-  font-size: 1.5rem;
+  color: var(--secondaryColor);
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-dialog .action-btn {
-  background-color: var(--color6);
-  color: #fff;
-  margin-right: 1rem;
-}
-
-dialog .cancel-btn {
-  background-color: #444;
-  color: #fff;
-}
-
-dialog button:hover,
-dialog button:focus {
-  opacity: 0.85;
-  transform: translateY(-2px);
-  outline: none;
+dialog .close-btn:hover,
+dialog .close-btn:focus {
+  color: var(--highlightColor);
 }
 
 /* Buttons */

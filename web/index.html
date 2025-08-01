@@ -35,10 +35,20 @@
 
     <main></main>
 
-    <dialog id="alert-modal">
-      <h2>Error</h2>
-      <p>An unexpected error occurred. Please try again later.</p>
-      <button onclick="app.closeError()">Close</button>
+    <dialog
+      id="alert-modal"
+      aria-modal="true"
+      aria-labelledby="alert-modal-title"
+      aria-describedby="alert-modal-description"
+    >
+      <button class="close-btn" aria-label="Close" onclick="app.closeError()">
+        &times;
+      </button>
+      <h2 id="alert-modal-title" class="modal-title">Error</h2>
+      <p id="alert-modal-description" class="modal-message">
+        Oops! Something went wrong on our end. Please try again in a moment or
+        refresh the page.
+      </p>
     </dialog>
 
     <template id="template-home">
