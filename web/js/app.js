@@ -1,3 +1,4 @@
+import "./components/AnimatedLoading.js";
 import { HomePage } from "./components/HomePage.js";
 import { API } from "./services/API.js";
 
