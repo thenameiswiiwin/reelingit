@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="ReelingIt: Discover movies, trailers, and more."
+    />
     <title>ReelingIt</title>
     <link rel="stylesheet" href="/css/styles.css" />
     <link
@@ -11,14 +15,38 @@
     />
     <link rel="manifest" href="/app.webmanifest" />
     <link rel="icon" href="/images/icon.png" />
+    <link rel="preload" href="/css/styles.css" as="style" />
+    <link rel="preload" href="/js/app.js" as="script" />
     <script src="/js/app.js" type="module" defer></script>
     <base href="/" />
   </head>
 
   <body>
-    <header>
-      <h1><img src="/images/logo.png" height="35" alt="ReelingIt" /></h1>
-      <nav>
+    <div
+      id="global-loader"
+      class="loading-wave"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--background-surface);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      Loading...
+    </div>
+    <header role="banner">
+      <h1>
+        <a href="/" aria-label="ReelingIt Home">
+          <img src="/images/logo.png" height="35" alt="ReelingIt Logo" />
+        </a>
+      </h1>
+      <nav role="navigation" aria-label="Main Navigation">
         <ul>
           <li><a class="navlink" href="/">Movies</a></li>
           <li><a class="navlink" href="/account/favorites">Favorites</a></li>
@@ -27,13 +55,21 @@
         </ul>
       </nav>
       <div>
-        <form onsubmit="app.search(event)">
-          <input type="search" placeholder="Search movies" />
+        <form
+          onsubmit="app.search(event)"
+          role="search"
+          aria-label="Search Movies"
+        >
+          <input
+            type="search"
+            placeholder="Search movies"
+            aria-label="Search movies"
+          />
         </form>
       </div>
     </header>
 
-    <main></main>
+    <main role="main" aria-live="polite"></main>
 
     <dialog
       id="alert-modal"
@@ -52,44 +88,75 @@
     </dialog>
 
     <template id="template-home">
-      <section id="top-10" class="vertical-scroll">
-        <h2>This Week's Top Movies</h2>
-        <ul></ul>
+      <section
+        id="top-10"
+        class="vertical-scroll"
+        aria-labelledby="top-movies-heading"
+      >
+        <h2 id="top-movies-heading">This Week's Top Movies</h2>
+        <ul role="list"></ul>
       </section>
-      <section id="random" class="vertical-scroll">
-        <h2>Something to watch today</h2>
-        <ul></ul>
+      <section
+        id="random"
+        class="vertical-scroll"
+        aria-labelledby="random-movies-heading"
+      >
+        <h2 id="random-movies-heading">Something to watch today</h2>
+        <ul role="list"></ul>
       </section>
     </template>
 
     <template id="template-movie-details">
-      <article id="movie">
-        <h2><animated-loading elements="2"></animated-loading></h2>
-        <h3></h3>
+      <article id="movie" aria-labelledby="movie-title">
+        <div class="title-metadata">
+          <div class="title-group">
+            <h2 id="movie-title">
+              <animated-loading elements="2"></animated-loading>
+            </h2>
+            <h3></h3>
+          </div>
+          <dl id="metadata" aria-label="Movie Metadata"></dl>
+        </div>
         <header>
-          <img src="" alt="Poster" />
-          <youtube-embed id="trailer" data-url=""></youtube-embed>
-          <section id="actions">
-            <dl id="metadata"></dl>
-            <button>Add to Favorites</button>
-            <button>Add to Watchlist</button>
-          </section>
+          <img src="" alt="Movie Poster" loading="lazy" />
+          <youtube-embed
+            id="trailer"
+            data-url=""
+            aria-label="Movie Trailer"
+          ></youtube-embed>
         </header>
-        <ul id="genres"></ul>
-        <p id="overview"></p>
-        <ul id="cast"></ul>
+        <h4 class="section-title">Genres</h4>
+        <ul id="genres" role="list"></ul>
+        <h4 class="section-title">Overview</h4>
+        <div class="overview-actions">
+          <p id="overview"></p>
+          <section id="actions" aria-label="Movie Actions">
+            <button aria-label="Add to Favorites">Add to Favorites</button>
+            <button aria-label="Add to Watchlist">Add to Watchlist</button>
+          </section>
+        </div>
+        <h4 class="section-title">Cast</h4>
+        <ul id="cast" role="list"></ul>
       </article>
     </template>
 
     <template id="template-movies">
-      <section>
+      <section aria-labelledby="search-results-heading">
         <div id="search-header">
-          <h2></h2>
-          <section id="filters">
-            <select id="filter" onchange="app.searchFilterChange(this.value)">
+          <h2 id="search-results-heading"></h2>
+          <section id="filters" aria-label="Search Filters">
+            <select
+              id="filter"
+              onchange="app.searchFilterChange(this.value)"
+              aria-label="Filter by Genre"
+            >
               <option>Filter by Genre</option>
             </select>
-            <select id="order" onchange="app.searchOrderChange(this.value)">
+            <select
+              id="order"
+              onchange="app.searchOrderChange(this.value)"
+              aria-label="Sort Order"
+            >
               <option value="popularity">Sort by Popularity</option>
               <option value="score">Sort by Score</option>
               <option value="date">Sort by Release Date</option>
@@ -97,7 +164,7 @@
             </select>
           </section>
         </div>
-        <ul id="movies-result">
+        <ul id="movies-result" role="list">
           <animated-loading
             data-elements="5"
             data-width="150px"
@@ -108,7 +175,7 @@
       </section>
     </template>
 
-    <footer>
+    <footer role="contentinfo">
       <p>copyright &copy; 2025 ReelingIt</p>
     </footer>
   </body>

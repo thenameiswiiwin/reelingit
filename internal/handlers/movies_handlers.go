@@ -57,6 +57,11 @@ func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 	if h.writeJSONResponse(w, movies) == nil {
 		h.logger.Info("Successfully served top movies")
 	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
 }
 
 func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +71,11 @@ func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
 	}
 	if h.writeJSONResponse(w, movies) == nil {
 		h.logger.Info("Successfully served random movies")
+	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
 	}
 }
 
@@ -94,6 +104,11 @@ func (h *MovieHandler) SearchMovies(w http.ResponseWriter, r *http.Request) {
 	if h.writeJSONResponse(w, movies) == nil {
 		h.logger.Info("Successfully served search results for query: " + query)
 	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
 }
 
 func (h *MovieHandler) GetMovie(w http.ResponseWriter, r *http.Request) {
@@ -110,6 +125,11 @@ func (h *MovieHandler) GetMovie(w http.ResponseWriter, r *http.Request) {
 	if h.writeJSONResponse(w, movie) == nil {
 		h.logger.Info("Successfully served movie with ID: " + strconv.Itoa(id))
 	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
 }
 
 func (h *MovieHandler) GetGenres(w http.ResponseWriter, r *http.Request) {
@@ -119,6 +139,11 @@ func (h *MovieHandler) GetGenres(w http.ResponseWriter, r *http.Request) {
 	}
 	if h.writeJSONResponse(w, genres) == nil {
 		h.logger.Info("Successfully served all genres")
+	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
 	}
 }
 
