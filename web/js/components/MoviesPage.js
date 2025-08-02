@@ -4,9 +4,9 @@ import { MovieItemComponent } from "./MovieItem.js";
 export class MoviesPage extends HTMLElement {
   async loadGenres() {
     try {
-      const genres = await API.fetch("genres");
+      const genres = await API.getGenres();
       const select = this.querySelector("#filter");
-      select.innerHTML = "<option>Filter by Genre</option>";
+      select.innerHTML = `<option>Filter by Genre</option>`;
       genres.forEach((genre) => {
         const option = document.createElement("option");
         option.value = genre.id;

@@ -2,6 +2,7 @@ export const API = {
   baseURL: "/api",
   getTopMovies: async () => await API.fetch("movies/top"),
   getRandomMovies: async () => await API.fetch("movies/random"),
+  getGenres: async () => await API.fetch("genres"),
   getMovieById: async (id) => await API.fetch(`movies/${id}`),
   searchMovies: async (q, order, genre) =>
     await API.fetch("movies/search", { q, order, genre }),
