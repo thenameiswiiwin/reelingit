@@ -254,8 +254,8 @@ func (r *AccountRepository) SaveCollection(user models.User, movieID int, collec
 }
 
 var (
-	ErrRegistrationValidation   = errors.New("registration failed")
-	ErrAuthenticationValidation = errors.New("authentication failed")
+	ErrRegistrationValidation   = errors.New("registration validation failed")
+	ErrAuthenticationValidation = errors.New("authentication validation failed")
 	ErrUserAlreadyExists        = errors.New("user already exists")
 	ErrUserNotFound             = errors.New("user not found")
 )

@@ -51,15 +51,21 @@ func main() {
 		log.Fatalf("Failed to create movie repository: %v", err)
 	}
 
+	accountRepo, err := data.NewAccountRepository(db, logInstance)
+	if err != nil {
+		log.Fatalf("Failed to create account repository: %v", err)
+	}
+
 	movieHandler := handlers.NewMovieHandler(movieRepo, logInstance)
+	accountHandler := handlers.NewAccountHandler(accountRepo, logInstance)
 
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
 	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
 	http.HandleFunc("/api/movies/search", movieHandler.SearchMovies)
 	http.HandleFunc("/api/movies/", movieHandler.GetMovie)
 	http.HandleFunc("/api/genres", movieHandler.GetGenres)
-	http.HandleFunc("/api/account/register", movieHandler.GetGenres)
-	http.HandleFunc("/api/account/authenticate", movieHandler.GetGenres)
+	http.HandleFunc("/api/account/register", accountHandler.Register)
+	http.HandleFunc("/api/account/authenticate", accountHandler.Authenticate)
 
 	catchAllClientHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, filepath.Join(getProjectRoot(), "web", "index.html"))
@@ -67,6 +73,7 @@ func main() {
 
 	http.HandleFunc("/movies", catchAllClientHandler)
 	http.HandleFunc("/movies/", catchAllClientHandler)
+	http.HandleFunc("/account/", catchAllClientHandler)
 
 	http.Handle("/", http.FileServer(http.Dir("web")))
 
