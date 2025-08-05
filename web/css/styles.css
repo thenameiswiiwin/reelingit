@@ -255,7 +255,6 @@ movie-item img {
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   margin-bottom: 0.75rem;
   object-fit: cover;
-  loading: lazy;
   transition: opacity 0.3s ease;
 }
 
@@ -354,6 +353,11 @@ select:hover {
   75% {
     transform: translateX(5px);
   }
+}
+
+.login,
+.register {
+  color: var(--color6);
 }
 
 /* Footer */
