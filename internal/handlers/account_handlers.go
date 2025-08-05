@@ -9,14 +9,14 @@ import (
 )
 
 type RegisterRequest struct {
-	Name           string `json:"name"`
-	Email          string `json:"email"`
-	PasswordHashed string `json:"password_hashed"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type AuthRequest struct {
-	Email          string `json:"email"`
-	PasswordHashed string `json:"password_hashed"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type AuthResponse struct {
@@ -67,7 +67,7 @@ func (h *AccountHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	success, err := h.storage.Register(req.Name, req.Email, req.PasswordHashed)
+	success, err := h.storage.Register(req.Name, req.Email, req.Password)
 	if h.handleStorageError(w, err, "Failed to register user") {
 		return
 	}
@@ -90,7 +90,7 @@ func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	success, err := h.storage.Authenticate(req.Email, req.PasswordHashed)
+	success, err := h.storage.Authenticate(req.Email, req.Password)
 	if h.handleStorageError(w, err, "Failed to authenticate user") {
 		return
 	}

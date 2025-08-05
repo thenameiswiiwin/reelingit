@@ -44,5 +44,68 @@ window.app = {
     urlParams.set("order", value);
     app.Router.go(`${window.location.pathname}?${urlParams.toString()}`);
   },
+  register: async (event) => {
+    event.preventDefault();
+    const name = document.getElementById("register-name").value.trim();
+    const email = document.getElementById("register-email").value.trim();
+    const password = document.getElementById("register-password").value.trim();
+    const passwordConfirm = document
+      .getElementById("register-password-confirm")
+      .value.trim();
+
+    const errors = [];
+    if (name.length < 4)
+      errors.push("Name must be at least 4 characters long.");
+    if (password.length < 6)
+      errors.push("Password must be at least 6 characters long.");
+    if (email.length < 5 || !email.includes("@"))
+      errors.push("Please enter a valid email address.");
+    if (password !== passwordConfirm) errors.push("Passwords do not match.");
+
+    if (errors.length === 0) {
+      try {
+        const response = await API.register(name, email, password);
+        if (response.success) {
+          app.Router.go("/account/");
+        } else {
+          app.showError(
+            "Registration Error",
+            response.message || "An error occurred during registration.",
+          );
+        }
+      } catch (error) {
+        app.showError("Registration Error", error.message);
+      }
+    } else {
+      app.showError("Registration Error", errors.join("\n"));
+    }
+  },
+  login: async (event) => {
+    event.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value.trim();
+    const errors = [];
+    if (email.length < 5 || !email.includes("@"))
+      errors.push("Please enter a valid email address.");
+    if (password.length < 6)
+      errors.push("Password must be at least 6 characters long.");
+    if (errors.length === 0) {
+      try {
+        const response = await API.login(email, password);
+        if (response.success) {
+          app.Router.go("/account/");
+        } else {
+          app.showError(
+            "Login Error",
+            response.message || "An error occurred during login.",
+          );
+        }
+      } catch (error) {
+        app.showError("Login Error", error.message);
+      }
+    } else {
+      app.showError("Login Error", errors.join("\n"));
+    }
+  },
   api: API,
 };
