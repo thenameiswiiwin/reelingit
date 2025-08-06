@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/thenameiswiiwin/reelingit/internal/data"
 	"github.com/thenameiswiiwin/reelingit/internal/logger"
 	"github.com/thenameiswiiwin/reelingit/internal/models"
@@ -108,6 +111,46 @@ func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
 	if err := h.writeJSONResponse(w, response); err == nil {
 		h.logger.Info("Successfully authenticated user with email: " + req.Email)
 	}
+}
+
+func (h *AccountHandler) AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		tokenStr := r.Header.Get("Authorization")
+		if tokenStr == "" {
+			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
+			return
+		}
+
+		tokenStr = strings.TrimPrefix(tokenStr, "Bearer ")
+
+		token, err := jwt.Parse(tokenStr,
+			func(t *jwt.Token) (interface{}, error) {
+				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, jwt.ErrSignatureInvalid
+				}
+				return []byte(token.GetJWTSecret(*h.logger)), nil
+			},
+		)
+		if err != nil || !token.Valid {
+			h.logger.Error("Invalid token", err)
+			return
+		}
+
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			http.Error(w, "Invalid token claims", http.StatusUnauthorized)
+			return
+		}
+
+		email, ok := claims["email"].(string)
+		if !ok {
+			http.Error(w, "Email claim not found in token", http.StatusUnauthorized)
+			return
+		}
+
+		ctx := context.WithValue(r.Context(), "email", email)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }
 
 func NewAccountHandler(storage data.AccountStorage, log *logger.Logger) *AccountHandler {
