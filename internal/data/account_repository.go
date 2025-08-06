@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"regexp"
+	"strconv"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -63,8 +64,7 @@ func (r *AccountRepository) Register(name, email, password string) (bool, error)
 	}
 
 	query := `
-		INSERT INTO users (name, email, password_hashed, time_created)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO users (name, email, password_hashed, time_created) VALUES ($1, $2, $3, $4)
 		RETURNING id
 	`
 	var userID int
@@ -99,7 +99,7 @@ func (r *AccountRepository) Authenticate(email string, password string) (bool, e
 		&user.ID,
 		&user.Name,
 		&user.Email,
-		&user.PasswordHashed,
+		&user.Password,
 	)
 	if err == sql.ErrNoRows {
 		r.logger.Error("User not found for email: "+email, nil)
@@ -110,7 +110,7 @@ func (r *AccountRepository) Authenticate(email string, password string) (bool, e
 		return false, err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHashed), []byte(password))
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
 		r.logger.Error("Password verification failed for user: "+email, err)
 		return false, ErrAuthenticationValidation
@@ -249,7 +249,7 @@ func (r *AccountRepository) SaveCollection(user models.User, movieID int, collec
 		return false, err
 	}
 	if exists {
-		r.logger.Info("Movie " + string(movieID) + " already exists in " + collection + " for user")
+		r.logger.Info("Movie " + strconv.Itoa(movieID) + " already exists in " + collection + " for user")
 		return true, nil
 	}
 

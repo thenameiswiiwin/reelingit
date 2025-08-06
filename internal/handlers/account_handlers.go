@@ -6,6 +6,8 @@ import (
 
 	"github.com/thenameiswiiwin/reelingit/internal/data"
 	"github.com/thenameiswiiwin/reelingit/internal/logger"
+	"github.com/thenameiswiiwin/reelingit/internal/models"
+	"github.com/thenameiswiiwin/reelingit/internal/token"
 )
 
 type RegisterRequest struct {
@@ -22,6 +24,7 @@ type AuthRequest struct {
 type AuthResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
+	JWT     string `json:"jwt"`
 }
 
 type AccountHandler struct {
@@ -75,6 +78,7 @@ func (h *AccountHandler) Register(w http.ResponseWriter, r *http.Request) {
 	response := AuthResponse{
 		Success: success,
 		Message: "User registered successfully",
+		JWT:     token.CreateJWT(models.User{Email: req.Email, Name: req.Name}, *h.logger),
 	}
 
 	if err := h.writeJSONResponse(w, response); err == nil {
@@ -98,6 +102,7 @@ func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
 	response := AuthResponse{
 		Success: success,
 		Message: "User authenticated successfully",
+		JWT:     token.CreateJWT(models.User{Email: req.Email}, *h.logger),
 	}
 
 	if err := h.writeJSONResponse(w, response); err == nil {
