@@ -202,6 +202,10 @@ window.app = {
       app.showError("Login Error", error.message);
     }
   },
+  logout: async () => {
+    Store.jwt = null;
+    app.Router.go("/");
+  },
   api: API,
 };
 
