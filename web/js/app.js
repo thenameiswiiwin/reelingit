@@ -2,6 +2,7 @@ import "./components/AnimatedLoading.js";
 import "./components/YoutubeEmbed.js";
 import { API } from "./services/API.js";
 import { Router } from "./services/Router.js";
+import Store from "./services/Store.js";
 
 window.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("global-loader").style.display = "none";
@@ -10,6 +11,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 window.app = {
   Router,
+  Store,
   showError: (
     title = "Error",
     message = "Oops! Something went wrong on our end. Please try again in a moment or refresh the page.",
@@ -158,6 +160,7 @@ window.app = {
       const response = await API.register(name, email, password);
       if (response.success) {
         app.showToast("Registration successful!");
+        app.Store.jwt = response.jwt;
         setTimeout(() => app.Router.go("/account/"), 3000);
       } else {
         app.showError(
@@ -187,6 +190,7 @@ window.app = {
       const response = await API.login(email, password);
       if (response.success) {
         app.showToast("Login successful!");
+        app.Store.jwt = response.jwt;
         setTimeout(() => app.Router.go("/account/"), 3000);
       } else {
         app.showError(
