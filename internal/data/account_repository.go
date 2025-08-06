@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"errors"
+	"regexp"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -23,12 +24,25 @@ func NewAccountRepository(db *sql.DB, log *logger.Logger) (*AccountRepository, e
 	}, nil
 }
 
+var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+
 func (r *AccountRepository) Register(name, email, password string) (bool, error) {
 	if name == "" || email == "" || password == "" {
 		r.logger.Error("Registration validation failed: missing fields", nil)
 		return false, ErrRegistrationValidation
 	}
-
+	if len(name) < 4 {
+		r.logger.Error("Registration validation failed: name too short", nil)
+		return false, errors.New("name must be at least 4 characters long")
+	}
+	if len(password) < 6 {
+		r.logger.Error("Registration validation failed: password too short", nil)
+		return false, errors.New("password must be at least 6 characters long")
+	}
+	if !emailRegex.MatchString(email) {
+		r.logger.Error("Registration validation failed: invalid email", nil)
+		return false, errors.New("invalid email format")
+	}
 	var exists bool
 	err := r.db.QueryRow(`
 		SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)
